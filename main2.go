@@ -1,5 +1,6 @@
 package main
 
+//imported modules within the MongoDB Go Driver
 import (
 	"context"
 	"fmt"
@@ -41,6 +42,7 @@ func RandomString(n int) string {
 }
 
 func main() {
+	//establish a connection to our MongoDB
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, _ := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
 	db := client.Database("go_search")
@@ -49,13 +51,15 @@ func main() {
 
 	app.Use(cors.New())
 
+	//variable to store user id , which will help later in get request to post under this id
 	var savuserid = ""
 
-	//creating an user with all its fields random string
+	//post request to create an user with random credentials
 	app.Post("/users", func(c *fiber.Ctx) error {
 		collection := db.Collection("users")
 		ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
+		//creating an user with all its information random string
 		var id = RandomString(15)
 		var name = RandomString(9)
 		var email = RandomString(10)
